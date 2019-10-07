@@ -19,7 +19,7 @@ public class VendingMachine  {
                     stockLevel--;
                 }
                 else {
-                    throw new ProductNotFoundException(product);
+                    throw new ChocolatesAllGone(product);
                 }
             }
             else if (product instanceof SoftDrink) {
@@ -28,7 +28,7 @@ public class VendingMachine  {
                     stockLevel--;
                 }
                 else {
-                    throw new ProductNotFoundException(product);
+                    throw new SoftDrinksOutOfStockException(product);
                 }
             }
             else if (product instanceof SaltySnack) {
@@ -37,7 +37,7 @@ public class VendingMachine  {
                     stockLevel--;
                 }
                 else {
-                    throw new ProductNotFoundException(product);
+                    throw new SaltyCracksAllEatenException(product);
                 }
             }
 
@@ -45,7 +45,6 @@ public class VendingMachine  {
         else {
             throw new InvalidProductException();
         }
-        System.out.println("stock level " + stockLevel);
     }
     public void addStock(Product product, int newStock) {
         if (product instanceof SoftDrink) {
@@ -59,37 +58,47 @@ public class VendingMachine  {
         }
         stockLevel += newStock;
     }
-    public int getProductStock(Product product) {
+    public String getProductStock(Product product) {
         if (product instanceof Chocolate) {
-            return chocolateCount;
+            return product.getProductName() + " left: " + chocolateCount;
         } else if (product instanceof SoftDrink) {
-            return drinkCount;
+            return product.getProductName() + " left: " + drinkCount;
         }
-        return saltySnacksCount;
+        return product.getProductName() + " left: " + saltySnacksCount;
     }
 
     public int getStockLevel() {
         return stockLevel;
     }
 
-    public static void main(String[] args) throws ProductNotFoundException {
-        SoftDrink coke = new SoftDrink("Coke", "350ml coke can", 6.99);
-        Chocolate barOne = new Chocolate("Bar one", "250g slab", 7.99);
-        SaltySnack simba = new SaltySnack("Simba Chips", "500g bag", 16.99);
+    public static void main(String[] args) {
+        try {
+            SoftDrink coke = new SoftDrink("Coke", "350ml coke can", 6.99);
+            Chocolate barOne = new Chocolate("Bar one", "250g slab", 7.99);
+            SaltySnack simba = new SaltySnack("Simba Chips", "500g bag", 16.99);
 
-        VendingMachine vendingMachine1 = new VendingMachine();
-        vendingMachine1.addStock(coke, 4);
-        vendingMachine1.addStock(barOne, 3);
-        vendingMachine1.addStock(simba, 4);
+            VendingMachine vendingMachine1 = new VendingMachine();
+            VendingMachine vendingMachine2 =  new VendingMachine();
 
-        vendingMachine1.buy(coke);
-        vendingMachine1.buy(coke);
-        vendingMachine1.buy(coke);
-        vendingMachine1.buy(coke);
-        vendingMachine1.buy(simba);
-        vendingMachine1.buy(simba);vendingMachine1.buy(simba);
-        vendingMachine1.buy(simba);
-        vendingMachine1.buy(simba);
+            vendingMachine1.addStock(coke, 4);
+            vendingMachine1.addStock(barOne, 3);
+            vendingMachine1.addStock(simba, 4);
+
+            System.out.println(vendingMachine2.getStockLevel());
+
+            System.out.println(vendingMachine1.getStockLevel());
+            vendingMachine1.buy(coke);
+            System.out.println(vendingMachine1.getStockLevel());
+            System.out.println(vendingMachine1.getProductStock(coke));
+        } catch (SaltyCracksAllEatenException sa) {
+            sa.printStackTrace();
+        } catch (SoftDrinksOutOfStockException so) {
+            so.printStackTrace();
+        } catch (ChocolatesAllGone ch) {
+            ch.printStackTrace();
+        } catch (ProductNotFoundException pr) {
+            pr.printStackTrace();
+        }
 //        System.out.println(vendingMachine1.getProductStock(coke));
     }
 }
