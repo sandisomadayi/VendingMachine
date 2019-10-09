@@ -92,15 +92,41 @@ public class MaxiVendingMachine extends VendingMachine {
 
     public String getStockLevel(Product product) {
         if (product instanceof Chocolate) {
-            return product.getProductName() + " left: " + chocolateCount;
+            return product.getProductName() + " remaining: " + chocolateCount;
         } else if (product instanceof SoftDrink) {
-            return product.getProductName() + " left: " + softDrinkCount;
+            return product.getProductName() + " remaining: " + softDrinkCount;
         }
-        return product.getProductName() + " left: " + saltySnackCount;
+        return product.getProductName() + " remaining: " + saltySnackCount;
     }
 
     @Override
     public int getStockLevel() {
         return chocolateCount+softDrinkCount+saltySnackCount;
+    }
+
+    public static void main(String[] args) {
+        try {
+            SoftDrink coke = new SoftDrink("Coke", "350ml coke can", 6.99);
+            Chocolate barOne = new Chocolate("Bar one", "250g slab", 7.99);
+            SaltySnack lays = new SaltySnack("lays", "500g bag", 16.99);
+
+            MaxiVendingMachine maxiVendingMachine = new MaxiVendingMachine();
+
+            maxiVendingMachine.addStock(barOne, 1);
+            maxiVendingMachine.addStock(coke, 1);
+            maxiVendingMachine.addStock(lays, 1);
+
+            maxiVendingMachine.buy(barOne);
+            maxiVendingMachine.buy(coke);
+            maxiVendingMachine.buy(lays);
+        }catch (ChocolatesAllGone ch) {
+            ch.printStackTrace();
+        }catch (SoftDrinksOutOfStockException so) {
+            so.printStackTrace();
+        }catch (SaltyCracksAllEatenException sa) {
+            sa.printStackTrace();
+        }catch (ProductNotFoundException pr) {
+            pr.printStackTrace();
+        }
     }
 }
