@@ -11,6 +11,7 @@ import products.SaltySnack;
 import products.SoftDrink;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrow;
 
 public class MaxiVendingMachineTest {
 
