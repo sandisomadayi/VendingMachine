@@ -116,4 +116,11 @@ public class MaxiVendingMachineTest {
 
         assertEquals("aero remaining: 1", maxiVendingMachine.getStockLevel(aero));
     }
+    @Test
+    void shouldThrowSaltySnackException() {
+        MaxiVendingMachine machine1 = new MaxiVendingMachine ();
+        SaltySnack lays = new SaltySnack("lays", "500g bag", 16.99);
+        
+        assertThrow(SaltyCracksAllEatenException.class, () -> machine1.buy(lays));
+    }
 }
